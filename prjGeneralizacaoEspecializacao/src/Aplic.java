@@ -125,9 +125,7 @@ public class Aplic
             if (opcao == 1)
             {
             
-            }
-            
-            
+            }      
             
         } //while   
 
