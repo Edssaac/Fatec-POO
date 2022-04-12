@@ -98,13 +98,13 @@ public class ListaNumeros {
     * maior dos valores armazenados na matriz. 
     * @return double
     */
-    public double calcMaior() {
+    public double pesqMaior() {
         
-        double maior=0;
+        double maior=this.matNum[0];
         
-        for ( int n=0; n<this.qtdeElem; n++ ) {
+        for ( int n=1; n<this.qtdeElem; n++ ) {
             
-            if ( this.matNum[n] > maior )
+            if ( maior < this.matNum[n] )
                 maior = this.matNum[n];
         }
                 
@@ -117,11 +117,11 @@ public class ListaNumeros {
     * menor dos valores armazenados na matriz. 
     * @return double
     */
-    public double calcMenor() {
+    public double pesqMenor() {
         
         double menor=this.matNum[0];
         
-        for ( int n=0; n<this.qtdeElem; n++ ) {
+        for ( int n=1; n<this.qtdeElem; n++ ) {
             
             if ( menor > this.matNum[n] )
                 menor = this.matNum[n];

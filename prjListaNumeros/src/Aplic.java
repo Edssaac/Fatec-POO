@@ -45,27 +45,27 @@ public class Aplic {
             switch(opcao) {
                 
                 case 1:
-                    System.out.println("Somatória: " + objLista.calcSomatoria());
+                    System.out.println("\nSomatória: " + objLista.calcSomatoria());
                     break;
                 
                 case 2:
-                    System.out.println("Média: " + objLista.calcMedia());
+                    System.out.println("\nMédia: " + objLista.calcMedia());
                     break;
                     
                 case 3:
-                    System.out.println("Maior Valor: " + objLista.calcMaior());
+                    System.out.println("\nMaior Valor: " + objLista.pesqMaior());
                     break;
                     
                 case 4:
-                    System.out.println("Menor Valor: " + objLista.calcMenor());
+                    System.out.println("\nMenor Valor: " + objLista.pesqMenor());
                     break;
                     
                 case 5:
-                    System.out.println("\t -- Lista --");
+                    System.out.println("\n\t -- Lista --");
                     double[] lista = objLista.getMatNum();
                     
                     for ( int n=0; n<quantidade; n++ ) {
-                        System.out.printf("#%.2f\n", lista[n]);
+                        System.out.printf("#%d: %.2f\n", (n+1), lista[n]);
                     }
                     
                     break;
