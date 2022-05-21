@@ -15,6 +15,10 @@ public class ItemPedido {
     // Quantidade Vendida do Item Pedido:
     public double qtdeVendida;
 
+    private Pedido pedido;
+
+    private Produto produto;
+
     /**
      * Método construtor da classe ItemPedido.
      *
@@ -25,6 +29,7 @@ public class ItemPedido {
     public ItemPedido(int sequencia, double qtdeVendida, Produto produto) {
         this.sequencia = sequencia;
         this.qtdeVendida = qtdeVendida;
+        this.produto = produto;
     }
 
     /**
@@ -61,6 +66,25 @@ public class ItemPedido {
      */
     public void setQtdeVendida(double qtdeVendida) {
         this.qtdeVendida = qtdeVendida;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void atualizaEstoque() {
+        double quantidade;
+
+        quantidade = this.produto.getQtdeEstoque() - this.qtdeVendida;
+        produto.setQtdeEstoque(quantidade);
     }
 
 }

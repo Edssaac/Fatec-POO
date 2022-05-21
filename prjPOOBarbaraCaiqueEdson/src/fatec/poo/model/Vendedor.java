@@ -1,5 +1,7 @@
 package fatec.poo.model;
 
+import java.util.ArrayList;
+
 /**
  * Classe responsável por representar um Vendedor.
  *
@@ -14,6 +16,9 @@ public class Vendedor extends Pessoa {
 
     // Taxa de Comissão (%) do Vendedor:
     private double taxaComissao;
+
+    // Pedidos ministrados pelo Vendedor:
+    private ArrayList<Pedido> pedidos = new ArrayList<>();
 
     /**
      * Método construtor da classe Vendedor.
@@ -61,6 +66,17 @@ public class Vendedor extends Pessoa {
      */
     public void setTaxaComissao(double taxaComissao) {
         this.taxaComissao = taxaComissao;
+    }
+
+    /**
+     * Método responsável por adicionar um pedido na lista de pedidos do
+     * Vendedor.
+     *
+     * @param pedido
+     */
+    public void addPedido(Pedido pedido) {
+        pedidos.add(pedido);
+        pedido.setVendedor(this);
     }
 
 }

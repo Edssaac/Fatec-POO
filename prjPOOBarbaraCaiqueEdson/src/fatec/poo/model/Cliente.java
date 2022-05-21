@@ -1,5 +1,7 @@
 package fatec.poo.model;
 
+import java.util.ArrayList;
+
 /**
  * Classe responsável por representar um Cliente.
  *
@@ -14,6 +16,9 @@ public class Cliente extends Pessoa {
 
     // Limite Disponível do Cliente:
     private double limiteDisp;
+
+    // Pedidos do Cliente:
+    private ArrayList<Pedido> pedidos = new ArrayList<>();
 
     /**
      * Método construtor da classe Cliente.
@@ -64,4 +69,15 @@ public class Cliente extends Pessoa {
         this.limiteDisp = limiteDisp;
     }
 
+    /**
+     * Método responsável por adicionar um pedido na lista de pedidos do
+     * Cliente.
+     *
+     * @param pedido
+     */
+    public void addPedido(Pedido pedido) {
+        pedidos.add(pedido);
+        pedido.setCliente(this);
+    }
+    
 }

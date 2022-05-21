@@ -1,5 +1,7 @@
 package fatec.poo.model;
 
+import java.util.ArrayList;
+
 /**
  * Classe responsável por representar um Pedido.
  *
@@ -19,10 +21,19 @@ public class Pedido {
     private String dataPagto;
 
     // Forma de Pagamento do Pedido:
-    private String formaPagto;
+    private boolean formaPagto;
 
     // Situação do Pedido:
-    private String situacao;
+    private boolean situacao;
+
+    // Cliente do Pedido:
+    private Cliente cliente;
+
+    // Vendedor do Pedido:
+    private Vendedor vendedor;
+
+    // Lista de Itens Pedidos:
+    private ArrayList<ItemPedido> ItensPedidos = new ArrayList<>();
 
     /**
      * Método construtor da classe Pedido.
@@ -94,7 +105,7 @@ public class Pedido {
      *
      * @return formaPagto
      */
-    public String getFormaPagto() {
+    public boolean getFormaPagto() {
         return formaPagto;
     }
 
@@ -103,7 +114,7 @@ public class Pedido {
      *
      * @param formaPagto
      */
-    public void setFormaPagto(String formaPagto) {
+    public void setFormaPagto(boolean formaPagto) {
         this.formaPagto = formaPagto;
     }
 
@@ -112,7 +123,7 @@ public class Pedido {
      *
      * @return situacao
      */
-    public String getSituacao() {
+    public boolean getSituacao() {
         return situacao;
     }
 
@@ -121,8 +132,37 @@ public class Pedido {
      *
      * @param situacao
      */
-    public void setSituacao(String situacao) {
+    public void setSituacao(boolean situacao) {
         this.situacao = situacao;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    public ArrayList<ItemPedido> getItensPedidos() {
+        return ItensPedidos;
+    }
+
+    public void addItemPedido(ItemPedido IP) {
+        double limite;
+
+        ItensPedidos.add(IP);
+        limite = cliente.getLimiteDisp() - (IP.getProduto().getPreco() * IP.getQtdeVendida());
+        cliente.setLimiteDisp(limite);
+        IP.atualizaEstoque();
     }
 
 }
