@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
+import fatec.poo.model.PropostaSeguro;
+
 /**
- *
  * @author Edssaac
  */
 public class formPropostaSeguro extends javax.swing.JFrame {
@@ -74,9 +70,15 @@ public class formPropostaSeguro extends javax.swing.JFrame {
         btnSair.setText("Sair");
         btnSair.setMinimumSize(new java.awt.Dimension(55, 25));
         btnSair.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         btnLimpar.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.setEnabled(false);
         btnLimpar.setPreferredSize(new java.awt.Dimension(100, 30));
         btnLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,11 +87,6 @@ public class formPropostaSeguro extends javax.swing.JFrame {
         });
 
         txtNome.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        txtNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeActionPerformed(evt);
-            }
-        });
 
         txtValorCarro.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
 
@@ -101,11 +98,22 @@ public class formPropostaSeguro extends javax.swing.JFrame {
 
         btnCalcular.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         btnCalcular.setText("Calcular");
+        btnCalcular.setEnabled(false);
         btnCalcular.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcularActionPerformed(evt);
+            }
+        });
 
         btnMontar.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         btnMontar.setText("Montar");
         btnMontar.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnMontar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMontarActionPerformed(evt);
+            }
+        });
 
         pnlSexo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sexo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 0, 12))); // NOI18N
 
@@ -146,11 +154,6 @@ public class formPropostaSeguro extends javax.swing.JFrame {
 
         ckbSomenteCidade.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         ckbSomenteCidade.setText("Dirige Somente na Cidade");
-        ckbSomenteCidade.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ckbSomenteCidadeActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlPerfilLayout = new javax.swing.GroupLayout(pnlPerfil);
         pnlPerfil.setLayout(pnlPerfilLayout);
@@ -334,17 +337,40 @@ public class formPropostaSeguro extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnMontarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMontarActionPerformed
+
+        if (txtNome.getText().isEmpty() || txtValorCarro.getText().isEmpty()) {
+            return;
+        }
+
+        objPropSeg = new PropostaSeguro(txtNome.getText(), Double.parseDouble(txtValorCarro.getText()));
+        objPropSeg.setSexo(rbtMasculino.isSelected());
+        objPropSeg.setFaixaIdade(cmbFaixaIdade.getSelectedIndex());
+        objPropSeg.setPerfilCidade(ckbSomenteCidade.isSelected());
+        objPropSeg.setPerfilMotorista(ckbUnicoMotorista.isSelected());
+
+        btnMontar.setEnabled(false);
+        btnCalcular.setEnabled(true);
+        btnLimpar.setEnabled(true);
+    }//GEN-LAST:event_btnMontarActionPerformed
+
+    private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
+        lblValorBase.setText(String.valueOf(objPropSeg.getValorBase()));
+        lblDescontoSexo.setText(String.valueOf(objPropSeg.calcDescSexo()));
+        lblDescontoIdade.setText(String.valueOf(objPropSeg.calcDescIdade()));
+        lblDescontoPerfil.setText(String.valueOf(objPropSeg.calcDescPerfilMotorista()));
+        lblValorSeguro.setText(String.valueOf(objPropSeg.calcSeguro()));
+    }//GEN-LAST:event_btnCalcularActionPerformed
+
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        // TODO add your handling code here:
+        btnMontar.setEnabled(true);
+        btnCalcular.setEnabled(false);
+        btnLimpar.setEnabled(false);
     }//GEN-LAST:event_btnLimparActionPerformed
-
-    private void ckbSomenteCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbSomenteCidadeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ckbSomenteCidadeActionPerformed
-
-    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -411,4 +437,7 @@ public class formPropostaSeguro extends javax.swing.JFrame {
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtValorCarro;
     // End of variables declaration//GEN-END:variables
+
+    private PropostaSeguro objPropSeg;
+
 }

@@ -19,6 +19,10 @@ public class PropostaSeguro {
         valorBase = 0.10 * this.valorCarro;
     }
 
+    public PropostaSeguro() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public void setSexo(boolean sexo) {
         this.sexo = sexo;
     }
@@ -45,6 +49,22 @@ public class PropostaSeguro {
         } else {    //masculino
             return (0);
         }
+    }
+
+    public double getValorCarro() {
+        return valorCarro;
+    }
+
+    public void setValorCarro(double valorCarro) {
+        this.valorCarro = valorCarro;
+    }
+
+    public double getValorBase() {
+        return valorBase;
+    }
+
+    public void setValorBase(double valorBase) {
+        this.valorBase = valorBase;
     }
 
     public double calcDescIdade() {
