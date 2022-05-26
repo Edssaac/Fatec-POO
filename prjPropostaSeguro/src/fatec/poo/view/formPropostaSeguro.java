@@ -80,11 +80,6 @@ public class formPropostaSeguro extends javax.swing.JFrame {
         btnLimpar.setText("Limpar");
         btnLimpar.setEnabled(false);
         btnLimpar.setPreferredSize(new java.awt.Dimension(100, 30));
-        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimparActionPerformed(evt);
-            }
-        });
 
         txtNome.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
 
