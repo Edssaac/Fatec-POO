@@ -15,8 +15,10 @@ public class ItemPedido {
     // Quantidade Vendida do Item Pedido:
     public double qtdeVendida;
 
+    // Pedido do Item Pedido:
     private Pedido pedido;
 
+    // Produto do Pedido:
     private Produto produto;
 
     /**
@@ -68,18 +70,36 @@ public class ItemPedido {
         this.qtdeVendida = qtdeVendida;
     }
 
+    /**
+     * Método responsável por retornar o PEDIDO do ItemPedido.
+     *
+     * @return pedido
+     */
     public Pedido getPedido() {
         return pedido;
     }
 
+    /**
+     * Método responsável por definir o PEDIDO do ItemPedido.
+     *
+     * @param pedido
+     */
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
 
+    /**
+     * Método responsável por retornar o PRODUTO do ItemPedido.
+     *
+     * @return produto
+     */
     public Produto getProduto() {
         return produto;
     }
 
+    /**
+     * Método responsável por atualizar a quantidade em Estoque.
+     */
     public void atualizaEstoque() {
         double quantidade;
 

@@ -27,7 +27,7 @@ public class Cliente extends Pessoa {
      * @param nome
      * @param limiteCred
      */
-    Cliente(String cpf, String nome, double limiteCred) {
+    public Cliente(String cpf, String nome, double limiteCred) {
         super(cpf, nome);
         this.limiteCred = limiteCred;
         this.limiteDisp = limiteCred;
@@ -79,5 +79,5 @@ public class Cliente extends Pessoa {
         pedidos.add(pedido);
         pedido.setCliente(this);
     }
-    
+
 }

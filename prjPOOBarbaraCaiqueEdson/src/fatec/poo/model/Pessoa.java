@@ -18,6 +18,9 @@ public class Pessoa {
     // Endereco da Pessoa:
     private String endereco;
 
+    // Cidade da Pessoa:
+    private String cidade;
+
     // UF da Pessoa:
     private String uf;
 
@@ -93,6 +96,24 @@ public class Pessoa {
      */
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    /**
+     * Método responsável por retornar a CIDADE da Pessoa.
+     *
+     * @return cidade
+     */
+    public String getCidade() {
+        return cidade;
+    }
+
+    /**
+     * Método responsável por definir a CIDADE da Pessoa.
+     *
+     * @param cidade
+     */
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
     /**

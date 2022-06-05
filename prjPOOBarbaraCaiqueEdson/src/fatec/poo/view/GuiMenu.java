@@ -1,12 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
+import fatec.poo.model.Pessoa;
+import fatec.poo.model.Produto;
+import java.util.ArrayList;
+
 /**
- * Interface dos Menus.
+ * Interface responsável pelo menu principal da aplicação.
  *
  * @author Barbára Aparecida
  * @author Caique Oliveira
@@ -83,6 +82,11 @@ public class GuiMenu extends javax.swing.JFrame {
         jMenuPedido.setText("Pedido");
 
         jMenuItemEmitirPedido.setText("Emitir Pedido");
+        jMenuItemEmitirPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEmitirPedidoActionPerformed(evt);
+            }
+        });
         jMenuPedido.add(jMenuItemEmitirPedido);
 
         jMenuBar1.add(jMenuPedido);
@@ -105,20 +109,24 @@ public class GuiMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClientesActionPerformed
-        new GuiCliente().setVisible(true);
+        new GuiCliente(cadCliVend).setVisible(true);
     }//GEN-LAST:event_jMenuItemClientesActionPerformed
-
-    private void jMenuItemVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVendedoresActionPerformed
-        new GuiVendedor().setVisible(true);
-    }//GEN-LAST:event_jMenuItemVendedoresActionPerformed
-
-    private void jMenuItemProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProdutosActionPerformed
-        new GuiProduto().setVisible(true);
-    }//GEN-LAST:event_jMenuItemProdutosActionPerformed
 
     private void jMenuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSairActionPerformed
         dispose();
     }//GEN-LAST:event_jMenuItemSairActionPerformed
+
+    private void jMenuItemVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVendedoresActionPerformed
+        new GuiVendedor(cadCliVend).setVisible(true);
+    }//GEN-LAST:event_jMenuItemVendedoresActionPerformed
+
+    private void jMenuItemProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProdutosActionPerformed
+        new GuiProduto(cadProd).setVisible(true);
+    }//GEN-LAST:event_jMenuItemProdutosActionPerformed
+
+    private void jMenuItemEmitirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEmitirPedidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemEmitirPedidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -166,4 +174,7 @@ public class GuiMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuPedido;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
+    
+    private ArrayList<Pessoa> cadCliVend = new ArrayList<>();
+    private ArrayList<Produto> cadProd = new ArrayList<>();
 }
