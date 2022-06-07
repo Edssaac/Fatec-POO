@@ -104,7 +104,7 @@ public class ItemPedido {
         double quantidade;
 
         quantidade = this.produto.getQtdeEstoque() - this.qtdeVendida;
-        produto.setQtdeEstoque(quantidade);
+        this.setQtdeVendida(quantidade);
     }
 
 }
