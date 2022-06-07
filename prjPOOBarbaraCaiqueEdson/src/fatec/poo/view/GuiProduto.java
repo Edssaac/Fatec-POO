@@ -1,24 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
+import fatec.poo.model.Produto;
+import java.util.ArrayList;
+
 /**
- * Interface do Produto.
+ * Interface responsável pela interação com o Produto.
  *
  * @author Barbára Aparecida
  * @author Caique Oliveira
  * @author Edson Isaac
  */
 public class GuiProduto extends javax.swing.JFrame {
-
-    /**
-     * Creates new form GuiProduto
-     */
-    public GuiProduto() {
+    
+    public GuiProduto(ArrayList<Produto> p) {
         initComponents();
+        
+        produtos = p;
     }
 
     /**
@@ -69,18 +66,38 @@ public class GuiProduto extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnIncluir.setText("Incluir");
         btnIncluir.setEnabled(false);
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -175,39 +192,98 @@ public class GuiProduto extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        boolean encontra = false;
+        
+        for (int i = 0; i < produtos.size(); i++) {
+            if (txtCodigo.getText().equals(produtos.get(i).getCodigo())) {
+                txtDescricao.setText(produtos.get(i).getDescricao());
+                txtQtdeDisponivel.setText(String.valueOf(produtos.get(i).getQtdeEstoque()));
+                txtPrecoUnit.setText(String.valueOf(produtos.get(i).getPreco()));
+                txtEstoqueMinimo.setText(String.valueOf(produtos.get(i).getEstoqueMinimo()));
+                
+                btnConsultar.setEnabled(false);
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+                
+                encontra = true;
+                
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuiProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuiProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuiProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuiProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        
+        txtCodigo.setEnabled(false);
+        txtDescricao.setEnabled(true);
+        txtQtdeDisponivel.setEnabled(true);
+        txtPrecoUnit.setEnabled(true);
+        txtEstoqueMinimo.setEnabled(true);
+        
+        if (!encontra) {
+            txtDescricao.setEnabled(true);
+            btnConsultar.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+            btnIncluir.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GuiProduto().setVisible(true);
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        Produto p = new Produto(txtCodigo.getText(), txtDescricao.getText());
+        
+        p.setQtdeEstoque(Double.parseDouble(txtQtdeDisponivel.getText()));
+        p.setPreco(Double.parseDouble(txtPrecoUnit.getText()));
+        p.setEstoqueMinimo(Double.parseDouble(txtEstoqueMinimo.getText()));
+        
+        produtos.add(p);
+        
+        inicializa();
+        
+        btnIncluir.setEnabled(false);
+        btnConsultar.setEnabled(true);
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        for (int i = 0; i < produtos.size(); i++) {
+            if (txtCodigo.getText().equals(produtos.get(i).getCodigo())) {
+                produtos.get(i).setDescricao(txtDescricao.getText());
+                produtos.get(i).setQtdeEstoque(Double.parseDouble(txtQtdeDisponivel.getText()));
+                produtos.get(i).setPreco(Double.parseDouble(txtPrecoUnit.getText()));
+                produtos.get(i).setEstoqueMinimo(Double.parseDouble(txtEstoqueMinimo.getText()));
             }
-        });
+        }
+        
+        inicializa();
+        
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnConsultar.setEnabled(true);
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        for (int i = 0; i < produtos.size(); i++) {
+            if (txtCodigo.getText().equals(produtos.get(i).getCodigo())) {
+                produtos.remove(i);
+            }
+        }
+        
+        inicializa();
+        
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnConsultar.setEnabled(true);
+    }//GEN-LAST:event_btnExcluirActionPerformed
+    
+    void inicializa() {
+        txtCodigo.setText("");
+        txtCodigo.setEnabled(true);
+        txtDescricao.setText("");
+        txtDescricao.setEnabled(false);
+        txtQtdeDisponivel.setText("");
+        txtQtdeDisponivel.setEnabled(false);
+        txtEstoqueMinimo.setText("");
+        txtEstoqueMinimo.setEnabled(false);
+        txtPrecoUnit.setText("");
+        txtPrecoUnit.setEnabled(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -227,4 +303,6 @@ public class GuiProduto extends javax.swing.JFrame {
     private javax.swing.JTextField txtPrecoUnit;
     private javax.swing.JTextField txtQtdeDisponivel;
     // End of variables declaration//GEN-END:variables
+
+    private ArrayList<Produto> produtos = new ArrayList<>();
 }

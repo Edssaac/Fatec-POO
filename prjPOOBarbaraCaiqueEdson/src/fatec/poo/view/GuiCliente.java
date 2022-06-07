@@ -1,12 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
+import fatec.poo.model.Cliente;
+import fatec.poo.model.Pessoa;
+import java.util.ArrayList;
+
 /**
- * Interface do Cliente.
+ * Interface responsável pela interação com o Cliente.
  *
  * @author Barbára Aparecida
  * @author Caique Oliveira
@@ -14,11 +13,10 @@ package fatec.poo.view;
  */
 public class GuiCliente extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GuiCliente
-     */
-    public GuiCliente() {
+    public GuiCliente(ArrayList<Pessoa> c) {
         initComponents();
+
+        clientes = c;
     }
 
     /**
@@ -39,7 +37,7 @@ public class GuiCliente extends javax.swing.JFrame {
         txtNomeCliente = new javax.swing.JTextField();
         txtEnderecoCliente = new javax.swing.JTextField();
         txtCidadeCliente = new javax.swing.JTextField();
-        TxtDDDCliente = new javax.swing.JTextField();
+        txtDDDCliente = new javax.swing.JTextField();
         txtTelefoneCliente = new javax.swing.JTextField();
         txtLimiteCredito = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -49,11 +47,11 @@ public class GuiCliente extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         lblLimitDisponivel = new javax.swing.JLabel();
         ftfCPF = new javax.swing.JFormattedTextField();
-        bntConsultar = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
         btnIncluir = new javax.swing.JButton();
-        bntAlterar = new javax.swing.JButton();
-        bntExcluir = new javax.swing.JButton();
-        bntSair = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro Cliente");
@@ -76,13 +74,16 @@ public class GuiCliente extends javax.swing.JFrame {
 
         txtCidadeCliente.setEnabled(false);
 
-        TxtDDDCliente.setEnabled(false);
+        txtDDDCliente.setEnabled(false);
 
         txtTelefoneCliente.setEnabled(false);
 
         txtLimiteCredito.setEnabled(false);
 
         jLabel7.setText("UF");
+
+        cbxUF.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MS", "MT", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" }));
+        cbxUF.setEnabled(false);
 
         jLabel8.setText("CEP");
 
@@ -98,26 +99,46 @@ public class GuiCliente extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        bntConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
-        bntConsultar.setText("Consultar");
+        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
+        btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnIncluir.setText("Incluir");
         btnIncluir.setEnabled(false);
-
-        bntAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
-        bntAlterar.setText("Alterar");
-        bntAlterar.setEnabled(false);
-
-        bntExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
-        bntExcluir.setText("Excluir");
-        bntExcluir.setEnabled(false);
-
-        bntSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
-        bntSair.setText("Sair");
-        bntSair.addActionListener(new java.awt.event.ActionListener() {
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bntSairActionPerformed(evt);
+                btnIncluirActionPerformed(evt);
+            }
+        });
+
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
+        btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
             }
         });
 
@@ -138,7 +159,7 @@ public class GuiCliente extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNomeCliente)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(ftfCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(ftfCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,21 +168,25 @@ public class GuiCliente extends javax.swing.JFrame {
                                     .addComponent(jLabel5))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(txtCidadeCliente)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cbxUF, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtEnderecoCliente)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(TxtDDDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtTelefoneCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
-                                        .addComponent(jLabel8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtCidadeCliente)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(txtDDDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtTelefoneCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                                                .addComponent(jLabel8)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(25, 25, 25)
+                                                .addComponent(jLabel7)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cbxUF, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -173,15 +198,15 @@ public class GuiCliente extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addComponent(bntConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)
                         .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bntAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bntExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bntSair, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -208,7 +233,7 @@ public class GuiCliente extends javax.swing.JFrame {
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(TxtDDDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDDDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTelefoneCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -220,11 +245,11 @@ public class GuiCliente extends javax.swing.JFrame {
                     .addComponent(lblLimitDisponivel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bntConsultar)
+                    .addComponent(btnConsultar)
                     .addComponent(btnIncluir)
-                    .addComponent(bntAlterar)
-                    .addComponent(bntExcluir)
-                    .addComponent(bntSair))
+                    .addComponent(btnAlterar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnSair))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
 
@@ -232,52 +257,134 @@ public class GuiCliente extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bntSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntSairActionPerformed
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         dispose();
-    }//GEN-LAST:event_bntSairActionPerformed
+    }//GEN-LAST:event_btnSairActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        boolean encontra = false;
+
+        for (int i = 0; i < clientes.size(); i++) {
+            if (clientes.get(i) instanceof Cliente && ftfCPF.getText().equals(clientes.get(i).getCpf())) {
+                txtNomeCliente.setText(clientes.get(i).getNome());
+                txtEnderecoCliente.setText(clientes.get(i).getEndereco());
+                txtCidadeCliente.setText(clientes.get(i).getCidade());
+                txtCEP.setText(clientes.get(i).getCep());
+                txtDDDCliente.setText(clientes.get(i).getDdd());
+                txtTelefoneCliente.setText(clientes.get(i).getTelefone());
+                txtLimiteCredito.setText(String.valueOf(((Cliente) clientes.get(i)).getLimiteCred()));
+                lblLimitDisponivel.setText(String.valueOf(((Cliente) clientes.get(i)).getLimiteDisp()));
+                cbxUF.setSelectedItem(clientes.get(i).getUf());
+
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+
+                encontra = true;
+
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuiCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuiCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuiCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuiCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GuiCliente().setVisible(true);
+        ftfCPF.setEnabled(false);
+        txtNomeCliente.setEnabled(false);
+        txtLimiteCredito.setEnabled(false);
+        btnConsultar.setEnabled(false);
+
+        txtCEP.setEnabled(true);
+        txtCidadeCliente.setEnabled(true);
+        txtDDDCliente.setEnabled(true);
+        txtEnderecoCliente.setEnabled(true);
+        txtTelefoneCliente.setEnabled(true);
+        cbxUF.setEnabled(true);
+
+        if (!encontra) {
+            txtNomeCliente.setEnabled(true);
+            txtLimiteCredito.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+            btnIncluir.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        Cliente c = new Cliente(ftfCPF.getText(), txtNomeCliente.getText(), Double.parseDouble(txtLimiteCredito.getText()));
+
+        c.setEndereco(txtEnderecoCliente.getText());
+        c.setCidade(txtCidadeCliente.getText());
+        c.setCep(txtCEP.getText());
+        c.setDdd(txtDDDCliente.getText());
+        c.setTelefone(txtTelefoneCliente.getText());
+        c.setUf(String.valueOf(cbxUF.getSelectedItem()));
+
+        clientes.add(c);
+
+        inicializa();
+
+        btnIncluir.setEnabled(false);
+        btnConsultar.setEnabled(true);
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        for (int i = 0; i < clientes.size(); i++) {
+            if (clientes.get(i) instanceof Cliente && ftfCPF.getText().equals(clientes.get(i).getCpf())) {
+                clientes.remove(i);
             }
-        });
+        }
+
+        inicializa();
+
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnConsultar.setEnabled(true);
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        for (int i = 0; i < clientes.size(); i++) {
+            if (clientes.get(i) instanceof Cliente && ftfCPF.getText().equals(clientes.get(i).getCpf())) {
+                clientes.get(i).setEndereco(txtEnderecoCliente.getText());
+                clientes.get(i).setCidade(txtCidadeCliente.getText());
+                clientes.get(i).setCep(txtCEP.getText());
+                clientes.get(i).setDdd(txtDDDCliente.getText());
+                clientes.get(i).setTelefone(txtTelefoneCliente.getText());
+                clientes.get(i).setUf(String.valueOf(cbxUF.getSelectedItem()));
+            }
+        }
+
+        inicializa();
+
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnConsultar.setEnabled(true);
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    void inicializa() {
+        ftfCPF.setText("");
+        ftfCPF.setEnabled(true);
+        txtNomeCliente.setText("");
+        txtNomeCliente.setEnabled(false);
+        txtLimiteCredito.setText("");
+        txtLimiteCredito.setEnabled(false);
+        txtEnderecoCliente.setText("");
+        txtEnderecoCliente.setEnabled(false);
+        txtCidadeCliente.setText("");
+        txtCidadeCliente.setEnabled(false);
+        txtCEP.setText("");
+        txtCEP.setEnabled(false);
+        txtDDDCliente.setText("");
+        txtDDDCliente.setEnabled(false);
+        txtTelefoneCliente.setText("");
+        txtTelefoneCliente.setEnabled(false);
+        lblLimitDisponivel.setText("");
+        cbxUF.setSelectedIndex(0);
+        cbxUF.setEnabled(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField TxtDDDCliente;
-    private javax.swing.JButton bntAlterar;
-    private javax.swing.JButton bntConsultar;
-    private javax.swing.JButton bntExcluir;
-    private javax.swing.JButton bntSair;
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnSair;
     private javax.swing.JComboBox<String> cbxUF;
     private javax.swing.JFormattedTextField ftfCPF;
     private javax.swing.JLabel jLabel1;
@@ -292,9 +399,12 @@ public class GuiCliente extends javax.swing.JFrame {
     private javax.swing.JLabel lblLimitDisponivel;
     private javax.swing.JTextField txtCEP;
     private javax.swing.JTextField txtCidadeCliente;
+    private javax.swing.JTextField txtDDDCliente;
     private javax.swing.JTextField txtEnderecoCliente;
     private javax.swing.JTextField txtLimiteCredito;
     private javax.swing.JTextField txtNomeCliente;
     private javax.swing.JTextField txtTelefoneCliente;
     // End of variables declaration//GEN-END:variables
+
+    private ArrayList<Pessoa> clientes = new ArrayList<>();
 }

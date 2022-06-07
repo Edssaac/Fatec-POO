@@ -136,26 +136,56 @@ public class Pedido {
         this.situacao = situacao;
     }
 
+    /**
+     * Método responsável por retornar o CLIENTE do Pedido.
+     *
+     * @return cliente
+     */
     public Cliente getCliente() {
         return cliente;
     }
 
+    /**
+     * Método responsável por definir o CLIENTE do Pedido.
+     *
+     * @param cliente
+     */
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
+    /**
+     * Método responsável por retornar o VENDEDOR do Pedido.
+     *
+     * @return vendedor
+     */
     public Vendedor getVendedor() {
         return vendedor;
     }
 
+    /**
+     * Método responsável por definir o VENDEDOR do Pedido.
+     *
+     * @param vendedor
+     */
     public void setVendedor(Vendedor vendedor) {
         this.vendedor = vendedor;
     }
 
+    /**
+     * Método responsável por retornar a lista de itens do Pedido.
+     *
+     * @return situacao
+     */
     public ArrayList<ItemPedido> getItensPedidos() {
         return ItensPedidos;
     }
 
+    /**
+     * Método responsável por adicionar um item na lista de Pedido.
+     *
+     * @param IP
+     */
     public void addItemPedido(ItemPedido IP) {
         double limite;
 
