@@ -192,7 +192,8 @@ public class Pedido {
         ItensPedidos.add(IP);
         limite = cliente.getLimiteDisp() - (IP.getProduto().getPreco() * IP.getQtdeVendida());
         cliente.setLimiteDisp(limite);
-        IP.atualizaEstoque();
+
+        IP.setQtdeVendida(IP.getQtdeVendida());
     }
 
 }

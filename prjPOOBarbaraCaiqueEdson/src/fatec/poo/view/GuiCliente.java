@@ -286,7 +286,7 @@ public class GuiCliente extends javax.swing.JFrame {
         }
 
         ftfCPF.setEnabled(false);
-        txtNomeCliente.setEnabled(false);
+        txtNomeCliente.setEnabled(true);
         txtLimiteCredito.setEnabled(false);
         btnConsultar.setEnabled(false);
 

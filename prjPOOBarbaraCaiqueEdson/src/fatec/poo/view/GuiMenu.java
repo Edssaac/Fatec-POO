@@ -1,5 +1,6 @@
 package fatec.poo.view;
 
+import fatec.poo.model.Pedido;
 import fatec.poo.model.Pessoa;
 import fatec.poo.model.Produto;
 import java.util.ArrayList;
@@ -125,7 +126,7 @@ public class GuiMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemProdutosActionPerformed
 
     private void jMenuItemEmitirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEmitirPedidoActionPerformed
-        // TODO add your handling code here:
+        new GuiEmitirPedido(cadPed, cadCliVend, cadProd).setVisible(true);
     }//GEN-LAST:event_jMenuItemEmitirPedidoActionPerformed
 
     /**
@@ -174,7 +175,8 @@ public class GuiMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuPedido;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
-    
+
     private ArrayList<Pessoa> cadCliVend = new ArrayList<>();
     private ArrayList<Produto> cadProd = new ArrayList<>();
+    private ArrayList<Pedido> cadPed = new ArrayList<>();
 }

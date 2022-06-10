@@ -271,7 +271,7 @@ public class GuiVendedor extends javax.swing.JFrame {
         }
 
         ftfCPFVendedor.setEnabled(false);
-        txtNomeVendedor.setEnabled(false);
+        txtNomeVendedor.setEnabled(true);
         txtSalBaseVendedor.setEnabled(false);
         btnConsultar.setEnabled(false);
 

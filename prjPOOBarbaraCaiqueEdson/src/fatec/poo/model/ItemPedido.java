@@ -30,7 +30,7 @@ public class ItemPedido {
      */
     public ItemPedido(int sequencia, double qtdeVendida, Produto produto) {
         this.sequencia = sequencia;
-        this.qtdeVendida = qtdeVendida;
+        this.setQtdeVendida(qtdeVendida);
         this.produto = produto;
     }
 
@@ -68,6 +68,7 @@ public class ItemPedido {
      */
     public void setQtdeVendida(double qtdeVendida) {
         this.qtdeVendida = qtdeVendida;
+        this.produto.setQtdeEstoque(this.produto.getQtdeEstoque() - this.qtdeVendida);
     }
 
     /**
@@ -95,16 +96,6 @@ public class ItemPedido {
      */
     public Produto getProduto() {
         return produto;
-    }
-
-    /**
-     * Método responsável por atualizar a quantidade em Estoque.
-     */
-    public void atualizaEstoque() {
-        double quantidade;
-
-        quantidade = this.produto.getQtdeEstoque() - this.qtdeVendida;
-        this.setQtdeVendida(quantidade);
     }
 
 }

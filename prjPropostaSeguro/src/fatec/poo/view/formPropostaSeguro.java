@@ -1,6 +1,8 @@
 package fatec.poo.view;
 
 import fatec.poo.model.PropostaSeguro;
+import java.util.stream.Stream;
+import javax.swing.JFrame;
 
 /**
  * @author Edssaac
@@ -80,6 +82,11 @@ public class formPropostaSeguro extends javax.swing.JFrame {
         btnLimpar.setText("Limpar");
         btnLimpar.setEnabled(false);
         btnLimpar.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         txtNome.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
 
@@ -337,7 +344,6 @@ public class formPropostaSeguro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnMontarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMontarActionPerformed
-
         if (txtNome.getText().isEmpty() || txtValorCarro.getText().isEmpty()) {
             return;
         }
@@ -354,17 +360,37 @@ public class formPropostaSeguro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMontarActionPerformed
 
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
-        lblValorBase.setText(String.valueOf(objPropSeg.getValorBase()));
-        lblDescontoSexo.setText(String.valueOf(objPropSeg.calcDescSexo()));
-        lblDescontoIdade.setText(String.valueOf(objPropSeg.calcDescIdade()));
-        lblDescontoPerfil.setText(String.valueOf(objPropSeg.calcDescPerfilMotorista()));
-        lblValorSeguro.setText(String.valueOf(objPropSeg.calcSeguro()));
+        String valorBase = String.format("%.2f", objPropSeg.getValorBase());
+        String descontoSexo = String.format("%.2f", objPropSeg.calcDescSexo());
+        String descontoIdade = String.format("%.2f", objPropSeg.calcDescIdade());
+        String descontoPerfil = String.format("%.2f", objPropSeg.calcDescPerfilMotorista());
+        String calcSeguro = String.format("%.2f", objPropSeg.calcSeguro());
+
+        lblValorBase.setText(valorBase);
+        lblDescontoSexo.setText(descontoSexo);
+        lblDescontoIdade.setText(descontoIdade);
+        lblDescontoPerfil.setText(descontoPerfil);
+        lblValorSeguro.setText(calcSeguro);
     }//GEN-LAST:event_btnCalcularActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        txtNome.setText(null);
+        txtValorCarro.setText(null);
+        rbtMasculino.setSelected(true);
+        cmbFaixaIdade.setSelectedIndex(0);
+        ckbSomenteCidade.setSelected(false);
+        ckbUnicoMotorista.setSelected(false);
+        lblValorBase.setText(null);
+        lblDescontoSexo.setText(null);
+        lblDescontoIdade.setText(null);
+        lblDescontoPerfil.setText(null);
+        lblValorSeguro.setText(null);
+       
         btnMontar.setEnabled(true);
         btnCalcular.setEnabled(false);
         btnLimpar.setEnabled(false);
+        
+        txtNome.requestFocus();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     /**
