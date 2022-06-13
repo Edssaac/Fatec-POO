@@ -30,8 +30,8 @@ public class ItemPedido {
      */
     public ItemPedido(int sequencia, double qtdeVendida, Produto produto) {
         this.sequencia = sequencia;
-        this.setQtdeVendida(qtdeVendida);
         this.produto = produto;
+        this.setQtdeVendida(qtdeVendida);
     }
 
     /**

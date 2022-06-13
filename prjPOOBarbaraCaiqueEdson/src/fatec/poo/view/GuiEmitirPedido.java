@@ -1,14 +1,14 @@
 package fatec.poo.view;
 
 import fatec.poo.model.Cliente;
+import fatec.poo.model.ItemPedido;
 import fatec.poo.model.Pedido;
 import fatec.poo.model.Pessoa;
 import fatec.poo.model.Produto;
 import fatec.poo.model.Vendedor;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Interface responsável pela emissão de pedidos.
@@ -26,6 +26,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         pedidos = arrayPed;
 
         initComponents();
+        auxTable = (DefaultTableModel) tblProdutos.getModel();
     }
 
     @SuppressWarnings("unchecked")
@@ -56,8 +57,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         btnIPRemover = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProdutos = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtIPTotalPedido = new javax.swing.JTextField();
+        txtIPQuantidadeItens = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -251,9 +252,9 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         tblProdutos.setEnabled(false);
         jScrollPane1.setViewportView(tblProdutos);
 
-        jTextField1.setEnabled(false);
+        txtIPTotalPedido.setEnabled(false);
 
-        jTextField2.setEnabled(false);
+        txtIPQuantidadeItens.setEnabled(false);
 
         jLabel6.setText("Valor Total do Pedido");
 
@@ -292,8 +293,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                                     .addComponent(jLabel9))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                                    .addComponent(txtIPTotalPedido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(txtIPQuantidadeItens, javax.swing.GroupLayout.Alignment.TRAILING))))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -317,11 +318,11 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIPTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIPQuantidadeItens, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -464,7 +465,15 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         for (int i = 0; i < pedidos.size(); i++) {
             if (txtPedidoNumero.getText().equals(pedidos.get(i).getNumero())) {
                 existe = true;
-                // Mostrar os campos relacionados...
+                Cliente clientePedido = pedidos.get(i).getCliente();
+                Vendedor vendedorPedido = pedidos.get(i).getVendedor();
+
+                ftfPedidoData.setText(pedidos.get(i).getDataEmissao());
+                cbxPedidoFormaPagamento.setSelectedIndex((pedidos.get(i).getFormaPagto()) ? 1 : 0);
+                ftfClienteCPF.setText(clientePedido.getCpf());
+                txtClienteNome.setText(clientePedido.getNome());
+                ftfVendedorCPF.setText(vendedorPedido.getCpf());
+                txtVendedorNome.setText(vendedorPedido.getNome());
                 break;
             }
         }
@@ -547,6 +556,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 txtIPQtdeVendida.setEnabled(true);
                 btnIPAdicionar.setEnabled(true);
                 btnIPRemover.setEnabled(true);
+
+                produtoAtual = produtos.get(i);
                 break;
             }
         }
@@ -561,7 +572,29 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
     // Adicionar produto na lista:
     private void btnIPAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIPAdicionarActionPerformed
-        // TODO add your handling code here:
+        int quantidadeProduto = Integer.parseInt(txtIPQtdeVendida.getText());
+
+        if (quantidadeProduto <= 0) {
+            JOptionPane.showMessageDialog(null, "Quantidade inválida, selecione pelo menos 1.", "Atenção", JOptionPane.ERROR_MESSAGE);
+        } else if (produtoAtual.getEstoqueMinimo() < quantidadeProduto) {
+            JOptionPane.showMessageDialog(null, "Quantidade maior do que disponível no estoque, por favor selecione menos.", "Atenção", JOptionPane.ERROR_MESSAGE);
+        } else {
+            ItemPedido ip = new ItemPedido(0, Double.parseDouble(txtIPQtdeVendida.getText()), produtoAtual);
+
+            if (novoPedido.getCliente().getLimiteDisp() < (produtoAtual.getPreco() * quantidadeProduto)) {
+                JOptionPane.showMessageDialog(null, "Limite disponível pelo cliente não é suficiente.", "Atenção", JOptionPane.ERROR_MESSAGE);
+            } else {
+                novoPedido.addItemPedido(ip);
+
+                String linha[] = {produtoAtual.getCodigo(), produtoAtual.getDescricao(), String.valueOf(produtoAtual.getPreco()), txtIPQtdeVendida.getText(), String.valueOf((produtoAtual.getPreco() * quantidadeProduto))};
+                auxTable.addRow(linha);
+
+                valorTotalPedido += produtoAtual.getPreco();
+                quantidadeItensPedido += quantidadeProduto;
+                txtIPTotalPedido.setText(String.valueOf(valorTotalPedido));
+                txtIPQuantidadeItens.setText(String.valueOf(quantidadeItensPedido));
+            }
+        }
     }//GEN-LAST:event_btnIPAdicionarActionPerformed
 
     // Remover produto da lista:
@@ -618,13 +651,13 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTable tblProdutos;
     private javax.swing.JTextField txtClienteNome;
     private javax.swing.JTextField txtIPCodigo;
     private javax.swing.JTextField txtIPDescricao;
     private javax.swing.JTextField txtIPQtdeVendida;
+    private javax.swing.JTextField txtIPQuantidadeItens;
+    private javax.swing.JTextField txtIPTotalPedido;
     private javax.swing.JTextField txtPedidoNumero;
     private javax.swing.JTextField txtVendedorNome;
     // End of variables declaration//GEN-END:variables
@@ -633,5 +666,9 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     private ArrayList<Pessoa> vendedores = new ArrayList<>();
     private ArrayList<Produto> produtos = new ArrayList<>();
     private ArrayList<Pedido> pedidos = new ArrayList<>();
+    private Produto produtoAtual;
     private Pedido novoPedido;
+    private double valorTotalPedido = 0;
+    private int quantidadeItensPedido = 0;
+    private DefaultTableModel auxTable;
 }
