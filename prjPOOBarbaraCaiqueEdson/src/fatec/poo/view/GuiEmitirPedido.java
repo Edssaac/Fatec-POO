@@ -576,7 +576,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
         if (quantidadeProduto <= 0) {
             JOptionPane.showMessageDialog(null, "Quantidade inválida, selecione pelo menos 1.", "Atenção", JOptionPane.ERROR_MESSAGE);
-        } else if (produtoAtual.getEstoqueMinimo() < quantidadeProduto) {
+        } else if (produtoAtual.getQtdeEstoque() < quantidadeProduto) {
             JOptionPane.showMessageDialog(null, "Quantidade maior do que disponível no estoque, por favor selecione menos.", "Atenção", JOptionPane.ERROR_MESSAGE);
         } else {
             ItemPedido ip = new ItemPedido(0, Double.parseDouble(txtIPQtdeVendida.getText()), produtoAtual);
@@ -589,7 +589,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 String linha[] = {produtoAtual.getCodigo(), produtoAtual.getDescricao(), String.valueOf(produtoAtual.getPreco()), txtIPQtdeVendida.getText(), String.valueOf((produtoAtual.getPreco() * quantidadeProduto))};
                 auxTable.addRow(linha);
 
-                valorTotalPedido += produtoAtual.getPreco();
+                valorTotalPedido += (quantidadeProduto * produtoAtual.getPreco());
                 quantidadeItensPedido += quantidadeProduto;
                 txtIPTotalPedido.setText(String.valueOf(valorTotalPedido));
                 txtIPQuantidadeItens.setText(String.valueOf(quantidadeItensPedido));
