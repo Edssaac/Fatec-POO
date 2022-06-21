@@ -182,6 +182,15 @@ public class Pedido {
     }
 
     /**
+     * Método responsável por definir a lista de itens do Pedido.
+     *
+     * @paramn ItensPedidos
+     */
+    public void setItensPedidos(ArrayList<ItemPedido> ItensPedidos) {
+        this.ItensPedidos = ItensPedidos;
+    }
+
+    /**
      * Método responsável por adicionar um item na lista de Pedido.
      *
      * @param IP

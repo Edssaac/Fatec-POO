@@ -18,17 +18,17 @@ import javax.swing.table.DefaultTableModel;
  * @author Edson Isaac
  */
 public class GuiEmitirPedido extends javax.swing.JFrame {
-
+    
     public GuiEmitirPedido(ArrayList<Pedido> arrayPed, ArrayList<Pessoa> arrayCliVend, ArrayList<Produto> arrayProd) {
         clientes = arrayCliVend;
         vendedores = arrayCliVend;
         produtos = arrayProd;
         pedidos = arrayPed;
-
+        
         initComponents();
         auxTable = (DefaultTableModel) tblProdutos.getModel();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -189,6 +189,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Itens do Pedido"));
+        jPanel3.setEnabled(false);
 
         jLabel8.setText("Código do Produto");
 
@@ -249,7 +250,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tblProdutos.setEnabled(false);
         jScrollPane1.setViewportView(tblProdutos);
 
         txtIPTotalPedido.setEnabled(false);
@@ -461,29 +461,58 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     // Pesquisar pedido pelo código:
     private void btnPedidoPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedidoPesquisarActionPerformed
         boolean existe = false;
-
+        
         for (int i = 0; i < pedidos.size(); i++) {
             if (txtPedidoNumero.getText().equals(pedidos.get(i).getNumero())) {
                 existe = true;
+                indicePedido = i;
                 Cliente clientePedido = pedidos.get(i).getCliente();
                 Vendedor vendedorPedido = pedidos.get(i).getVendedor();
-
+                valorTotalPedido = 0;
+                
+                txtPedidoNumero.setEnabled(false);
+                btnPedidoPesquisar.setEnabled(false);
                 ftfPedidoData.setText(pedidos.get(i).getDataEmissao());
-                cbxPedidoFormaPagamento.setSelectedIndex((pedidos.get(i).getFormaPagto()) ? 1 : 0);
+                cbxPedidoFormaPagamento.setSelectedIndex(pedidos.get(i).getFormaPagto() ? 1 : 0);
+                cbxPedidoFormaPagamento.setEnabled(true);
                 ftfClienteCPF.setText(clientePedido.getCpf());
                 txtClienteNome.setText(clientePedido.getNome());
                 ftfVendedorCPF.setText(vendedorPedido.getCpf());
                 txtVendedorNome.setText(vendedorPedido.getNome());
+                txtIPCodigo.setEnabled(true);
+                btnIPPesquisar.setEnabled(true);
+                tblProdutos.setEnabled(true);
+                btnIPRemover.setEnabled(true);
+                txtIPQuantidadeItens.setText(String.valueOf(pedidos.get(i).getItensPedidos().size()));
+                
+                String codigo, descricao, preco, qtdVendida, subTotal;
+                
+                for (int j = 0; j < pedidos.get(i).getItensPedidos().size(); j++) {
+                    codigo = pedidos.get(i).getItensPedidos().get(j).getProduto().getCodigo();
+                    descricao = pedidos.get(i).getItensPedidos().get(j).getProduto().getDescricao();
+                    preco = String.valueOf(pedidos.get(i).getItensPedidos().get(j).getProduto().getPreco());
+                    qtdVendida = String.valueOf(pedidos.get(i).getItensPedidos().get(j).getQtdeVendida());
+                    subTotal = String.valueOf(pedidos.get(i).getItensPedidos().get(j).getQtdeVendida() * pedidos.get(i).getItensPedidos().get(j).getProduto().getPreco());
+                    
+                    valorTotalPedido += Double.parseDouble(subTotal);
+                    
+                    String linha[] = {codigo, descricao, preco, qtdVendida, subTotal};
+                    auxTable.addRow(linha);
+                }
+                
+                txtIPTotalPedido.setText(String.valueOf(valorTotalPedido));
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
                 break;
             }
         }
-
+        
         if (!existe) {
             txtPedidoNumero.setEnabled(false);
             btnPedidoPesquisar.setEnabled(false);
             ftfPedidoData.setEnabled(true);
             cbxPedidoFormaPagamento.setEnabled(true);
-
+            
             ftfClienteCPF.setEnabled(true);
             btnClientePesquisar.setEnabled(true);
         }
@@ -492,27 +521,27 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     // Pesquisar cliente pelo cpf:
     private void btnClientePesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientePesquisarActionPerformed
         boolean existe = false;
-        boolean formaPagto = (cbxPedidoFormaPagamento.getSelectedIndex() == 0);
+        boolean formaPagto = (cbxPedidoFormaPagamento.getSelectedIndex() == 1);
         novoPedido = new Pedido(txtPedidoNumero.getText(), ftfPedidoData.getText());
         novoPedido.setFormaPagto(formaPagto);
-
+        
         for (int i = 0; i < clientes.size(); i++) {
             if (clientes.get(i) instanceof Cliente && ftfClienteCPF.getText().equals(clientes.get(i).getCpf())) {
                 existe = true;
                 novoPedido.setCliente((Cliente) clientes.get(i));
                 txtClienteNome.setText(clientes.get(i).getNome());
-
+                
                 ftfPedidoData.setEnabled(false);
                 cbxPedidoFormaPagamento.setEnabled(false);
                 ftfClienteCPF.setEnabled(false);
                 btnClientePesquisar.setEnabled(false);
-
+                
                 ftfVendedorCPF.setEnabled(true);
                 btnVendedorPesquisar.setEnabled(true);
                 break;
             }
         }
-
+        
         if (!existe) {
             JOptionPane.showMessageDialog(null, "Cliente não encontrado.", "Atenção", JOptionPane.ERROR_MESSAGE);
         }
@@ -521,22 +550,22 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     // Pesquisar vendedor pelo cpf:
     private void btnVendedorPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendedorPesquisarActionPerformed
         boolean existe = false;
-
+        
         for (int i = 0; i < vendedores.size(); i++) {
             if (vendedores.get(i) instanceof Vendedor && ftfVendedorCPF.getText().equals(vendedores.get(i).getCpf())) {
                 existe = true;
                 novoPedido.setVendedor((Vendedor) vendedores.get(i));
                 txtVendedorNome.setText(vendedores.get(i).getNome());
-
+                
                 ftfVendedorCPF.setEnabled(false);
                 btnVendedorPesquisar.setEnabled(false);
-
+                
                 txtIPCodigo.setEnabled(true);
                 btnIPPesquisar.setEnabled(true);
                 break;
             }
         }
-
+        
         if (!existe) {
             JOptionPane.showMessageDialog(null, "Vendedor não encontrado.", "Atenção", JOptionPane.ERROR_MESSAGE);
         }
@@ -547,21 +576,21 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         boolean existe = false;
         txtIPDescricao.setText("");
         txtIPQtdeVendida.setText("");
-
+        
         for (int i = 0; i < produtos.size(); i++) {
             if (txtIPCodigo.getText().equals(produtos.get(i).getCodigo())) {
                 existe = true;
-
+                
                 txtIPDescricao.setText(produtos.get(i).getDescricao());
                 txtIPQtdeVendida.setEnabled(true);
                 btnIPAdicionar.setEnabled(true);
                 btnIPRemover.setEnabled(true);
-
+                
                 produtoAtual = produtos.get(i);
                 break;
             }
         }
-
+        
         if (!existe) {
             txtIPQtdeVendida.setEnabled(false);
             btnIPAdicionar.setEnabled(false);
@@ -573,54 +602,139 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     // Adicionar produto na lista:
     private void btnIPAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIPAdicionarActionPerformed
         int quantidadeProduto = Integer.parseInt(txtIPQtdeVendida.getText());
-
+        
         if (quantidadeProduto <= 0) {
             JOptionPane.showMessageDialog(null, "Quantidade inválida, selecione pelo menos 1.", "Atenção", JOptionPane.ERROR_MESSAGE);
         } else if (produtoAtual.getQtdeEstoque() < quantidadeProduto) {
             JOptionPane.showMessageDialog(null, "Quantidade maior do que disponível no estoque, por favor selecione menos.", "Atenção", JOptionPane.ERROR_MESSAGE);
         } else {
             ItemPedido ip = new ItemPedido(0, Double.parseDouble(txtIPQtdeVendida.getText()), produtoAtual);
-
+            
             if (novoPedido.getCliente().getLimiteDisp() < (produtoAtual.getPreco() * quantidadeProduto)) {
                 JOptionPane.showMessageDialog(null, "Limite disponível pelo cliente não é suficiente.", "Atenção", JOptionPane.ERROR_MESSAGE);
             } else {
                 novoPedido.addItemPedido(ip);
-
+                
                 String linha[] = {produtoAtual.getCodigo(), produtoAtual.getDescricao(), String.valueOf(produtoAtual.getPreco()), txtIPQtdeVendida.getText(), String.valueOf((produtoAtual.getPreco() * quantidadeProduto))};
                 auxTable.addRow(linha);
-
+                
                 valorTotalPedido += (quantidadeProduto * produtoAtual.getPreco());
-                quantidadeItensPedido += quantidadeProduto;
                 txtIPTotalPedido.setText(String.valueOf(valorTotalPedido));
-                txtIPQuantidadeItens.setText(String.valueOf(quantidadeItensPedido));
+                txtIPQuantidadeItens.setText(String.valueOf(tblProdutos.getRowCount()));
+                
+                tblProdutos.setEnabled(true);
+                btnIncluir.setEnabled(true);
             }
         }
     }//GEN-LAST:event_btnIPAdicionarActionPerformed
 
     // Remover produto da lista:
     private void btnIPRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIPRemoverActionPerformed
-        // TODO add your handling code here:
+        if (tblProdutos.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(null, "Nenhuma linha foi selecionada", "Atenção", JOptionPane.ERROR_MESSAGE);
+        } else {
+            for (int i = 0; i < novoPedido.getItensPedidos().size(); i++) {
+                if (novoPedido.getItensPedidos().get(i).getProduto().getCodigo().equals(auxTable.getValueAt(tblProdutos.getSelectedRow(), 0))) {
+                    novoPedido.getItensPedidos().get(i).getProduto().setQtdeEstoque(novoPedido.getItensPedidos().get(i).getProduto().getQtdeEstoque() + Double.parseDouble(auxTable.getValueAt(tblProdutos.getSelectedRow(), 3).toString()));
+                    novoPedido.getCliente().setLimiteDisp(novoPedido.getCliente().getLimiteDisp() + Double.parseDouble(auxTable.getValueAt(tblProdutos.getSelectedRow(), 4).toString()));
+                    novoPedido.getItensPedidos().remove(i);
+                    
+                    valorTotalPedido -= Double.parseDouble(auxTable.getValueAt(tblProdutos.getSelectedRow(), 4).toString());
+                    txtIPTotalPedido.setText(String.valueOf(valorTotalPedido));
+                    auxTable.removeRow(tblProdutos.getSelectedRow());
+                    txtIPQuantidadeItens.setText(String.valueOf(tblProdutos.getRowCount()));
+                    break;
+                }
+            }
+        }
     }//GEN-LAST:event_btnIPRemoverActionPerformed
 
     // Incluir dados:
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        // TODO add your handling code here:
+        pedidos.add(novoPedido);
+        
+        tblProdutos.setEnabled(false);
+        txtIPCodigo.setEnabled(false);
+        btnIPPesquisar.setEnabled(false);
+        txtIPQtdeVendida.setEnabled(false);
+        btnIPAdicionar.setEnabled(false);
+        btnIPRemover.setEnabled(false);
+        
+        txtPedidoNumero.setEnabled(true);
+        btnPedidoPesquisar.setEnabled(true);
+        
+        limparFormulario();
+        btnIncluir.setEnabled(false);
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     // Alterar dados:
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        // TODO add your handling code here:
+        boolean formaPagto = (cbxPedidoFormaPagamento.getSelectedIndex() == 1);
+        pedidos.get(indicePedido).setFormaPagto(formaPagto);
+        pedidos.get(indicePedido).setItensPedidos(novoPedido.getItensPedidos());
+        
+        txtIPCodigo.setEnabled(false);
+        btnIPPesquisar.setEnabled(false);
+        btnIPAdicionar.setEnabled(false);
+        btnIPRemover.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        
+        txtPedidoNumero.setEnabled(true);
+        btnPedidoPesquisar.setEnabled(true);
+        
+        limparFormulario();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     // Excluir dados:
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
+        ArrayList<ItemPedido> IP = pedidos.get(indicePedido).getItensPedidos();
+        Cliente IPCliente = pedidos.get(indicePedido).getCliente();
+        double restaurado = 0;
+        
+        for (int i = 0; i < IP.size(); i++) {
+            IP.get(i).getProduto().setQtdeEstoque(IP.get(i).getProduto().getQtdeEstoque() + IP.get(i).getQtdeVendida());
+            restaurado += (IP.get(i).getQtdeVendida() * IP.get(i).getProduto().getPreco());
+        }
+        
+        IPCliente.setLimiteDisp(IPCliente.getLimiteDisp() + restaurado);
+        
+        pedidos.remove(indicePedido);
+        
+        txtIPCodigo.setEnabled(false);
+        btnIPPesquisar.setEnabled(false);
+        btnIPAdicionar.setEnabled(false);
+        btnIPRemover.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        
+        txtPedidoNumero.setEnabled(true);
+        btnPedidoPesquisar.setEnabled(true);
+        
+        limparFormulario();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     // Sair da aplicação:
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnSairActionPerformed
+
+    // Funçaõ responsável por limpar o formulário:
+    private void limparFormulario() {
+        txtPedidoNumero.setText("");
+        ftfPedidoData.setText("");
+        cbxPedidoFormaPagamento.setSelectedIndex(0);
+        ftfClienteCPF.setText("");
+        txtClienteNome.setText("");
+        ftfVendedorCPF.setText("");
+        txtVendedorNome.setText("");
+        txtIPCodigo.setText("");
+        txtIPDescricao.setText("");
+        txtIPQtdeVendida.setText("");
+        txtIPQuantidadeItens.setText("");
+        txtIPTotalPedido.setText("");
+        auxTable.setRowCount(0);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
@@ -669,6 +783,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     private Produto produtoAtual;
     private Pedido novoPedido;
     private double valorTotalPedido = 0;
-    private int quantidadeItensPedido = 0;
     private DefaultTableModel auxTable;
+    private int indicePedido;
 }
