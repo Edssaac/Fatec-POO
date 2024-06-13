@@ -1,3 +1,4 @@
 # Programação Orientada a Objetos
-### Professor: Dimas Ferreira Cardoso
-#### 4° Semeste - 2022
+Repositório para as atividades de POO. </br>
+Faculdade de Tecnologia de Sorocaba - Fatec SO. </br>
+Professor: Dimas Ferreira Cardoso. </br>
